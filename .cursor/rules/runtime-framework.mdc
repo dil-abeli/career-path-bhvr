@@ -1,0 +1,8 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+- use the bun runtime and CLI
+- the client side uses vite, typescript and react
+- the server side uses hono
