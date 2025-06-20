@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react'
+import { themeLoader } from './theme-loader'
 
-export type ThemeType = 'custom' | 'atlas'
+export type ThemeType = 'solar-dusk' | 'notebook' | 'atlas'
 export type ThemeMode = 'light' | 'dark'
 
 export interface ThemeState {
@@ -25,13 +26,20 @@ export const useTheme = () => {
   return context
 }
 
-export const applyTheme = (theme: ThemeState) => {
+export const applyTheme = async (theme: ThemeState) => {
   const { type, mode } = theme
   const root = document.documentElement
 
   // Remove existing theme classes
-  root.classList.remove('custom', 'atlas', 'light', 'dark')
+  root.classList.remove('solar-dusk', 'notebook', 'atlas', 'light', 'dark')
 
   // Apply new theme classes
   root.classList.add(type, mode)
+
+  // Load theme CSS dynamically
+  try {
+    await themeLoader.loadTheme(theme)
+  } catch (error) {
+    console.error('Failed to load theme:', error)
+  }
 }

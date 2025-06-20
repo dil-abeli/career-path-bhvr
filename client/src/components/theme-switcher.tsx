@@ -1,31 +1,33 @@
-import { Palette, Sun, Moon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { useTheme } from '@/lib/theme'
+import ModeToggle from '@/components/mode-toggle'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 export const ThemeSwitcher = () => {
-  const { theme, toggleTheme, toggleMode } = useTheme()
+  const { theme, setTheme } = useTheme()
+
+  const handleThemeChange = (value: string) => {
+    setTheme({ type: value as 'solar-dusk' | 'notebook' | 'atlas' })
+  }
 
   return (
     <div className="flex items-center gap-2">
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={toggleMode}
-        title={`Switch to ${theme.mode === 'light' ? 'dark' : 'light'} mode`}
-      >
-        {theme.mode === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={toggleTheme}
-        title={`Switch to ${theme.type === 'custom' ? 'Atlas' : 'custom'} theme`}
-      >
-        <Palette className="h-4 w-4" />
-      </Button>
-      <span className="text-xs text-muted-foreground">
-        {theme.type === 'custom' ? 'Custom' : 'Atlas'}
-      </span>
+      <ModeToggle />
+      <Select value={theme.type} onValueChange={handleThemeChange}>
+        <SelectTrigger className="w-32">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="solar-dusk">Solar Dusk</SelectItem>
+          <SelectItem value="notebook">Notebook</SelectItem>
+          <SelectItem value="atlas">Atlas</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   )
 }
