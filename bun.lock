@@ -18,6 +18,7 @@
       "name": "client",
       "version": "0.0.1",
       "dependencies": {
+        "@diligentcorp/atlas-design-tokens": "^0.28.2",
         "@radix-ui/react-slot": "^1.2.3",
         "@tailwindcss/vite": "^4.1.10",
         "@tanstack/react-router": "^1.121.27",
@@ -129,6 +130,8 @@
     "@babel/traverse": ["@babel/traverse@7.27.4", "", { "dependencies": { "@babel/code-frame": "^7.27.1", "@babel/generator": "^7.27.3", "@babel/parser": "^7.27.4", "@babel/template": "^7.27.2", "@babel/types": "^7.27.3", "debug": "^4.3.1", "globals": "^11.1.0" } }, "sha512-oNcu2QbHqts9BtOWJosOVJapWjBDSxGCpFvikNR5TGDYDQf3JwpIoMzIKrvfoti93cLfPJEG4tH9SPVeyCGgdA=="],
 
     "@babel/types": ["@babel/types@7.27.6", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.27.1" } }, "sha512-ETyHEk2VHHvl9b9jZP5IHPavHYk57EhanlRRuae9XCpb/j5bDCbPPMOBfCWhnl/7EDJz0jEMCi/RhccCE8r1+Q=="],
+
+    "@diligentcorp/atlas-design-tokens": ["@diligentcorp/atlas-design-tokens@0.28.2", "https://npm.pkg.github.com/download/@DiligentCorp/atlas-design-tokens/0.28.2/1aa5fb8f5f954aa4318ad9bd46ec06dcec68e141", {}, "sha512-2JB6K4IAZ2ZrvGtKtF1j+NQP5o5DOMJsUCgGU56LwJ1LZ94Rk3zAQvv1Q0EoUo3oF0cfzBDMGtEpe5yxkWkY5Q=="],
 
     "@esbuild/aix-ppc64": ["@esbuild/aix-ppc64@0.25.3", "", { "os": "aix", "cpu": "ppc64" }, "sha512-W8bFfPA8DowP8l//sxjJLSLkD8iEjMc7cBVyP+u4cEv9sM7mdUCkgsj+t0n/BWPFtv7WWCN5Yzj0N6FJNUUqBQ=="],
 

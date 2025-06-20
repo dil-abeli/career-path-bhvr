@@ -1,5 +1,6 @@
 import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { ThemeSwitcher } from '../components/theme-switcher'
 
 export const Route = createRootRoute({
   component: () => (
@@ -62,6 +63,7 @@ export const Route = createRootRoute({
                   About
                 </Link>
               </nav>
+              <ThemeSwitcher />
             </div>
           </div>
         </nav>

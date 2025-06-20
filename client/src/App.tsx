@@ -1,6 +1,6 @@
 import { createRouter, RouterProvider } from '@tanstack/react-router'
-import { useEffect } from 'react'
 import { routeTree } from './routeTree.gen'
+import { ThemeProvider } from './components/theme-provider'
 
 const router = createRouter({ routeTree })
 
@@ -11,11 +11,11 @@ declare module '@tanstack/react-router' {
 }
 
 function App() {
-  useEffect(() => {
-    document.documentElement.classList.add('dark')
-  }, [])
-
-  return <RouterProvider router={router} />
+  return (
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  )
 }
 
 export default App

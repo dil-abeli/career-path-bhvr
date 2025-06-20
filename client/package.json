@@ -11,6 +11,7 @@
     "routes:generate": "tsr generate"
   },
   "dependencies": {
+    "@diligentcorp/atlas-design-tokens": "^0.28.2",
     "@radix-ui/react-slot": "^1.2.3",
     "@tailwindcss/vite": "^4.1.10",
     "@tanstack/react-router": "^1.121.27",
