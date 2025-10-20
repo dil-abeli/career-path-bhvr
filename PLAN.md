@@ -50,13 +50,13 @@
 
 Use shadcn components for necessary new components from its registry.
 
-### 2.1 Main Dashboard
+### 2.1 Main Dashboard ✅
 
-- [ ] Overview cards: PRs merged, reviews completed, tickets closed, current streak
-- [ ] Activity timeline visualization
-- [ ] Work distribution pie/bar charts (bugs vs features, review time, etc.)
-- [ ] Trend graphs (weekly/monthly activity patterns)
-- [ ] Quick stats comparison (this month vs last month)
+- [x] Overview cards: PRs merged, reviews completed, tickets closed, current streak
+- [x] Activity timeline visualization
+- [x] Work distribution pie/bar charts (bugs vs features, review time, etc.)
+- [x] Trend graphs (weekly/monthly activity patterns)
+- [x] Quick stats comparison (this month vs last month)
 
 ### 2.2 Detailed Metrics Views - lesser importance, no fancy UI for it just yet
 
@@ -190,8 +190,8 @@ Use shadcn components for necessary new components from its registry.
 3. ✅ Build GitHub integration (end-to-end)
 4. ✅ Add Jira integration
 5. ✅ Create data processing layer
-6. 🔄 Create dashboard with basic metrics (NEXT)
-7. Implement goal system
+6. ✅ Create dashboard with metrics visualization
+7. 🔄 Implement goal system (NEXT)
 8. Add AI insights generation
 9. Build promotion readiness tracker
 10. Implement recommendations
