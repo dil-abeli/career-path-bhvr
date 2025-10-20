@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 import type { TrendData } from "shared";
 
 interface ActivityTrendsProps {
@@ -20,14 +20,16 @@ const chartConfig = {
 };
 
 export function ActivityTrends({ productivityTrend, collaborationTrend }: ActivityTrendsProps) {
-	const chartData = productivityTrend.trends.map((item, index) => ({
+	const hasData = productivityTrend.trends && productivityTrend.trends.length > 0;
+
+	const chartData = hasData ? productivityTrend.trends.map((item, index) => ({
 		date: new Date(item.date).toLocaleDateString("en-US", {
 			month: "short",
 			day: "numeric",
 		}),
 		productivity: item.value,
 		collaboration: collaborationTrend?.trends[index]?.value || 0,
-	}));
+	})) : [];
 
 	return (
 		<Card>
@@ -37,33 +39,39 @@ export function ActivityTrends({ productivityTrend, collaborationTrend }: Activi
 					Your productivity and collaboration over the last 90 days
 				</CardDescription>
 			</CardHeader>
-			<CardContent>
-				<ChartContainer config={chartConfig} className="h-[300px] w-full">
-					<ResponsiveContainer width="100%" height="100%">
-						<LineChart data={chartData}>
-							<CartesianGrid strokeDasharray="3 3" />
-							<XAxis dataKey="date" />
-							<YAxis />
-							<ChartTooltip content={<ChartTooltipContent />} />
-							<Legend />
-							<Line
-								type="monotone"
-								dataKey="productivity"
-								stroke={chartConfig.productivity.color}
-								strokeWidth={2}
-								name="Productivity"
-							/>
-							<Line
-								type="monotone"
-								dataKey="collaboration"
-								stroke={chartConfig.collaboration.color}
-								strokeWidth={2}
-								name="Collaboration"
-							/>
-						</LineChart>
-					</ResponsiveContainer>
-				</ChartContainer>
-			</CardContent>
+		<CardContent>
+			{!hasData ? (
+				<div className="flex items-center justify-center h-[300px] text-muted-foreground">
+					<p>No trend data available</p>
+				</div>
+			) : (
+			<div className="h-[300px]">
+				<ChartContainer config={chartConfig} className="h-full w-full">
+					<LineChart data={chartData}>
+						<CartesianGrid strokeDasharray="3 3" />
+						<XAxis dataKey="date" />
+						<YAxis />
+						<ChartTooltip content={<ChartTooltipContent />} />
+						<Legend />
+						<Line
+							type="monotone"
+							dataKey="productivity"
+							stroke={chartConfig.productivity.color}
+							strokeWidth={2}
+							name="Productivity"
+						/>
+						<Line
+							type="monotone"
+							dataKey="collaboration"
+							stroke={chartConfig.collaboration.color}
+							strokeWidth={2}
+							name="Collaboration"
+						/>
+				</LineChart>
+			</ChartContainer>
+		</div>
+			)}
+		</CardContent>
 		</Card>
 	);
 }

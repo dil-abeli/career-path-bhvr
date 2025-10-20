@@ -16,7 +16,7 @@ function LoginPage() {
 	const [fullName, setFullName] = useState("");
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
-	
+
 	const { login: authLogin } = useAuth();
 	const navigate = useNavigate();
 

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { getDashboardMetrics, getTrendData } from "../lib/api/metrics/metrics.get";
+import { syncGitHubData } from "../lib/api/github/github";
 import type { AggregatedMetrics, TrendData } from "shared";
 import { MetricCard } from "../components/dashboard/metric-card";
 import { PerformanceScores } from "../components/dashboard/performance-scores";
@@ -8,12 +9,14 @@ import { WorkDistribution } from "../components/dashboard/work-distribution";
 import { ActivityTrends } from "../components/dashboard/activity-trends";
 import { GitHubHighlights, JiraHighlights } from "../components/dashboard/highlights";
 import { PeriodSelector } from "../components/dashboard/period-selector";
+import { Button } from "../components/ui/button";
 import {
 	GitPullRequest,
 	MessageSquare,
 	GitCommit,
 	CheckCircle2,
 	Activity,
+	RefreshCw,
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -21,6 +24,7 @@ const Dashboard = () => {
 	const [productivityTrend, setProductivityTrend] = useState<TrendData | null>(null);
 	const [collaborationTrend, setCollaborationTrend] = useState<TrendData | null>(null);
 	const [loading, setLoading] = useState(true);
+	const [syncing, setSyncing] = useState(false);
 	const [period, setPeriod] = useState("30");
 
 	useEffect(() => {
@@ -44,6 +48,25 @@ const Dashboard = () => {
 
 		fetchData();
 	}, [period]);
+
+	const handleSync = async () => {
+		try {
+			setSyncing(true);
+			await syncGitHubData();
+			const [metricsData, prodTrend, collabTrend] = await Promise.all([
+				getDashboardMetrics(period),
+				getTrendData("productivity", "90"),
+				getTrendData("collaboration", "90"),
+			]);
+			setMetrics(metricsData);
+			setProductivityTrend(prodTrend);
+			setCollaborationTrend(collabTrend);
+		} catch (error) {
+			console.error("Error syncing data:", error);
+		} finally {
+			setSyncing(false);
+		}
+	};
 
 	if (loading) {
 		return (
@@ -75,7 +98,18 @@ const Dashboard = () => {
 						Your career progress at a glance
 					</p>
 				</div>
-				<PeriodSelector period={period} onChange={setPeriod} />
+				<div className="flex items-center gap-4">
+					<Button
+						onClick={handleSync}
+						disabled={syncing}
+						variant="outline"
+						size="sm"
+					>
+						<RefreshCw className={`h-4 w-4 mr-2 ${syncing ? 'animate-spin' : ''}`} />
+						{syncing ? 'Syncing...' : 'Sync Data'}
+					</Button>
+					<PeriodSelector period={period} onChange={setPeriod} />
+				</div>
 			</div>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

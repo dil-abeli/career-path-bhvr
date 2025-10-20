@@ -219,7 +219,6 @@ export class GitHubService {
 	}
 
 	async syncCommits(userId: string, since?: Date): Promise<number> {
-		const sinceParam = since ? `&since=${since.toISOString()}` : "";
 		const events = await this.fetch(
 			`/users/${this.username}/events?per_page=100`
 		);
@@ -230,46 +229,43 @@ export class GitHubService {
 
 		for (const event of pushEvents) {
 			const repo = event.repo.name;
+			const headSha = event.payload.head;
 
-			for (const commit of event.payload.commits || []) {
-				try {
-					const commitDetails: GitHubCommit = await this.fetch(
-						`/repos/${repo}/commits/${commit.sha}`
-					);
+			if (!headSha) continue;
 
-					const existing = await db.query.githubCommits.findFirst({
-						where: and(
-							eq(githubCommits.userId, userId),
-							eq(githubCommits.sha, commit.sha)
-						),
-					});
+			try {
+				const commitDetails: GitHubCommit = await this.fetch(
+					`/repos/${repo}/commits/${headSha}`
+				);
 
-					const commitData: NewGithubCommit = {
-						userId,
-						sha: commit.sha,
-						repository: repo,
-						message: commitDetails.commit.message,
-						author: commitDetails.commit.author.name,
-						committedAt: new Date(commitDetails.commit.author.date),
-						additions: commitDetails.stats?.additions || 0,
-						deletions: commitDetails.stats?.deletions || 0,
-						url: commitDetails.html_url,
-						syncedAt: new Date(),
-					};
+				const existing = await db.query.githubCommits.findFirst({
+					where: and(
+						eq(githubCommits.userId, userId),
+						eq(githubCommits.sha, headSha)
+					),
+				});
 
-					if (existing) {
-						await db
-							.update(githubCommits)
-							.set(commitData)
-							.where(eq(githubCommits.id, existing.id));
-					} else {
-						await db.insert(githubCommits).values(commitData);
-					}
-
-					synced++;
-				} catch (error) {
-					console.error(`Error syncing commit ${commit.sha}:`, error);
+				if (existing) {
+					continue;
 				}
+
+				const commitData: NewGithubCommit = {
+					userId,
+					sha: headSha,
+					repository: repo,
+					message: commitDetails.commit.message,
+					author: commitDetails.commit.author.name,
+					committedAt: new Date(commitDetails.commit.author.date),
+					additions: commitDetails.stats?.additions || 0,
+					deletions: commitDetails.stats?.deletions || 0,
+					url: commitDetails.html_url,
+					syncedAt: new Date(),
+				};
+
+				await db.insert(githubCommits).values(commitData);
+				synced++;
+			} catch (error) {
+				console.error(`Error syncing commit ${headSha}:`, error);
 			}
 		}
 
