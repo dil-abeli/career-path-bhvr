@@ -167,3 +167,61 @@ export type CreateSkillRequest = {
 	proficiencyLevel: "beginner" | "intermediate" | "advanced" | "expert";
 	yearsOfExperience?: number;
 };
+
+export type TimeRange = {
+	startDate: string;
+	endDate: string;
+};
+
+export type GitHubMetrics = {
+	totalPRs: number;
+	mergedPRs: number;
+	openPRs: number;
+	totalReviews: number;
+	actionableReviews: number;
+	totalCommits: number;
+	linesAdded: number;
+	linesDeleted: number;
+	avgPRSize: number;
+	reviewQualityScore: number;
+};
+
+export type JiraMetrics = {
+	totalTickets: number;
+	completedTickets: number;
+	inProgressTickets: number;
+	totalStoryPoints: number;
+	completedStoryPoints: number;
+	avgCycleTime: number;
+	bugCount: number;
+	featureCount: number;
+	techDebtCount: number;
+	velocity: number;
+};
+
+export type VelocityTrend = "up" | "down" | "stable";
+
+export type OverallMetrics = {
+	productivityScore: number;
+	collaborationScore: number;
+	qualityScore: number;
+	velocityTrend: VelocityTrend;
+};
+
+export type AggregatedMetrics = {
+	github: GitHubMetrics;
+	jira: JiraMetrics;
+	overall: OverallMetrics;
+	timeRange: TimeRange;
+};
+
+export type TrendDataPoint = {
+	date: string;
+	value: number;
+};
+
+export type TrendData = {
+	type: "productivity" | "collaboration" | "quality";
+	period: number;
+	trends: TrendDataPoint[];
+};

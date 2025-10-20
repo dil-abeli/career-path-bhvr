@@ -6,6 +6,7 @@ import { userRouter } from "./routes/user";
 import { credentialsRouter } from "./routes/credentials";
 import { githubRouter } from "./routes/github";
 import { jiraRouter } from "./routes/jira";
+import { metricsRouter } from "./routes/metrics";
 
 export const app = new Hono()
 
@@ -28,6 +29,7 @@ export const app = new Hono()
 .route("/api/user", userRouter)
 .route("/api/credentials", credentialsRouter)
 .route("/api/github", githubRouter)
-.route("/api/jira", jiraRouter);
+.route("/api/jira", jiraRouter)
+.route("/api/metrics", metricsRouter);
 
 export default app;
