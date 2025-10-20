@@ -9,11 +9,11 @@
     "start": "bun run src/index.ts"
   },
   "dependencies": {
-    "hono": "^4.7.11",
+    "hono": "^4.10.1",
     "shared": "workspace:*"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "typescript": "5.9.3"
+    "typescript": "catalog:"
   }
 }

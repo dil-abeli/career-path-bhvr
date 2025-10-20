@@ -5,11 +5,16 @@
   "author": "Attila Beli",
   "license": "MIT",
   "homepage": "",
-  "workspaces": [
-    "./server",
-    "./client",
-    "./shared"
-  ],
+  "workspaces": {
+    "packages": [
+      "./server",
+      "./client",
+      "./shared"
+    ],
+    "catalog": {
+      "typescript": "5.9.3"
+    }
+  },
   "scripts": {
     "dev:client": "cd client && bun run dev",
     "dev:server": "cd server && bun run dev",
@@ -31,11 +36,5 @@
   "devDependencies": {
     "bun-types": "latest",
     "concurrently": "^9.2.1"
-  },
-  "peerDependencies": {
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "hono": "^4.10.1"
   }
 }
