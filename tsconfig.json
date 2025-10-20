@@ -8,19 +8,13 @@
     "jsx": "react-jsx",
     "allowJs": true,
 
-    // Path resolution
-    "baseUrl": "./",
-    "paths": {
-      "@server/*": ["./server/src/*"],
-      "@client/*": ["./client/src/*"],
-      "@shared/*": ["./shared/src/*"]
-    },
-
-    // Module resolution
+    // Module resolution (Bun-compatible)
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
 
     // Strictness and best practices
     "strict": true,
@@ -36,5 +30,11 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
-  }
+  },
+  "files": [],
+  "references": [
+    { "path": "./client" },
+    { "path": "./server" },
+    { "path": "./shared" }
+  ]
 }

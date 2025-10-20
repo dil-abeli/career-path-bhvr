@@ -39,3 +39,10 @@ pnpm-debug.log*
 
 # Bun
 bun.lockb
+
+# Database
+server/data/*.db
+server/data/*.db-*
+
+# Drizzle generated migrations (optional - keep if you want to track migrations)
+# server/drizzle/
