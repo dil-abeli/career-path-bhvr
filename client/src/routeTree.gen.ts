@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as MyProgressRouteImport } from './routes/my-progress'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CareerPathsRouteImport } from './routes/career-paths'
 import { Route as AboutRouteImport } from './routes/about'
@@ -24,6 +25,11 @@ const ProfileRoute = ProfileRouteImport.update({
 const MyProgressRoute = MyProgressRouteImport.update({
   id: '/my-progress',
   path: '/my-progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/career-paths': typeof CareerPathsRoute
   '/dashboard': typeof DashboardRoute
+  '/login': typeof LoginRoute
   '/my-progress': typeof MyProgressRoute
   '/profile': typeof ProfileRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/career-paths': typeof CareerPathsRoute
   '/dashboard': typeof DashboardRoute
+  '/login': typeof LoginRoute
   '/my-progress': typeof MyProgressRoute
   '/profile': typeof ProfileRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/career-paths': typeof CareerPathsRoute
   '/dashboard': typeof DashboardRoute
+  '/login': typeof LoginRoute
   '/my-progress': typeof MyProgressRoute
   '/profile': typeof ProfileRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/career-paths'
     | '/dashboard'
+    | '/login'
     | '/my-progress'
     | '/profile'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/career-paths'
     | '/dashboard'
+    | '/login'
     | '/my-progress'
     | '/profile'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/career-paths'
     | '/dashboard'
+    | '/login'
     | '/my-progress'
     | '/profile'
   fileRoutesById: FileRoutesById
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CareerPathsRoute: typeof CareerPathsRoute
   DashboardRoute: typeof DashboardRoute
+  LoginRoute: typeof LoginRoute
   MyProgressRoute: typeof MyProgressRoute
   ProfileRoute: typeof ProfileRoute
 }
@@ -122,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/my-progress'
       fullPath: '/my-progress'
       preLoaderRoute: typeof MyProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CareerPathsRoute: CareerPathsRoute,
   DashboardRoute: DashboardRoute,
+  LoginRoute: LoginRoute,
   MyProgressRoute: MyProgressRoute,
   ProfileRoute: ProfileRoute,
 }

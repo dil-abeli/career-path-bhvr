@@ -19,16 +19,20 @@ githubRouter.post("/sync", async (c) => {
 		const { userId } = c.get("user");
 		const body = await c.req.json<{ since?: string }>();
 
-		const token = await getDecryptedToken(userId, "github");
+		let token = await getDecryptedToken(userId, "github");
 
 		if (!token) {
-			return c.json(
-				{
-					error: "GitHub credentials not found. Please connect your account first.",
-					success: false,
-				},
-				400
-			);
+			token = process.env.GITHUB_PAT || null;
+			if (!token) {
+				return c.json(
+					{
+						error: "GitHub credentials not found. Please connect your account or set GITHUB_PAT environment variable.",
+						success: false,
+					},
+					400
+				);
+			}
+			console.log("Using GITHUB_PAT from environment as fallback");
 		}
 
 		const githubService = await createGitHubService(token);

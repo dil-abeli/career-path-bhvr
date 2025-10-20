@@ -1,5 +1,7 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { ThemeSwitcher } from './theme-switcher'
+import { useAuth } from '@/lib/auth-context'
+import { Button } from './ui/button'
 
 type TNavItem = {
   label: string
@@ -42,6 +44,14 @@ const NavItem = ({ label, to }: TNavItem) => {
 }
 
 export const Navbar = () => {
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate({ to: '/login' })
+  }
+
   return (
     <nav className="bg-background/95 supports-[backdrop-filter]:bg-background/60 border-b backdrop-blur">
       <div className="container mx-auto flex h-14 items-center">
@@ -56,7 +66,23 @@ export const Navbar = () => {
               <NavItem key={item.label} {...item} />
             ))}
           </nav>
-          <ThemeSwitcher />
+          <div className="flex items-center gap-4">
+            {user ? (
+              <>
+                <span className="text-sm text-muted-foreground">{user.email}</span>
+                <Button variant="outline" size="sm" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Link to="/login">
+                <Button variant="outline" size="sm">
+                  Login
+                </Button>
+              </Link>
+            )}
+            <ThemeSwitcher />
+          </div>
         </div>
       </div>
     </nav>

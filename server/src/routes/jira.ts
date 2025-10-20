@@ -15,23 +15,30 @@ jiraRouter.post("/sync", async (c) => {
 		const { userId, email } = c.get("user");
 		const body = await c.req.json<{ since?: string }>();
 
-		const token = await getDecryptedToken(userId, "jira");
-
-		if (!token) {
-			return c.json(
-				{
-					error: "Jira credentials not found. Please connect your account first.",
-					success: false,
-				},
-				400
-			);
-		}
+		let token = await getDecryptedToken(userId, "jira");
+		let domain: string | undefined;
 
 		const credentialData = await db.query.credentials.findFirst({
 			where: eq(credentials.userId, userId),
 		});
 
-		const domain = credentialData?.metadata?.domain as string | undefined;
+		domain = credentialData?.metadata?.domain as string | undefined;
+
+		if (!token) {
+			token = process.env.JIRA_TOKEN || null;
+			domain = process.env.JIRA_DOMAIN;
+
+			if (!token || !domain) {
+				return c.json(
+					{
+						error: "Jira credentials not found. Please connect your account or set JIRA_TOKEN and JIRA_DOMAIN environment variables.",
+						success: false,
+					},
+					400
+				);
+			}
+			console.log("Using JIRA_TOKEN from environment as fallback");
+		}
 
 		if (!domain) {
 			return c.json(
@@ -43,10 +50,11 @@ jiraRouter.post("/sync", async (c) => {
 			);
 		}
 
-		const jiraService = await createJiraService(token, email, domain);
+		const jiraEmail = process.env.JIRA_EMAIL || email;
+		const jiraService = await createJiraService(token, jiraEmail, domain);
 
 		const since = body.since ? new Date(body.since) : undefined;
-		const synced = await jiraService.syncIssues(userId, email, since);
+		const synced = await jiraService.syncIssues(userId, jiraEmail, since);
 
 		return c.json(
 			{
