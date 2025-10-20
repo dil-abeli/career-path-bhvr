@@ -12,6 +12,10 @@ const navItems: TNavItem[] = [
     to: '/',
   },
   {
+    label: 'Dashboard',
+    to: '/dashboard',
+  },
+  {
     label: 'Paths',
     to: '/career-paths',
   },

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as MyProgressRouteImport } from './routes/my-progress'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CareerPathsRouteImport } from './routes/career-paths'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +24,11 @@ const ProfileRoute = ProfileRouteImport.update({
 const MyProgressRoute = MyProgressRouteImport.update({
   id: '/my-progress',
   path: '/my-progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CareerPathsRoute = CareerPathsRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/career-paths': typeof CareerPathsRoute
+  '/dashboard': typeof DashboardRoute
   '/my-progress': typeof MyProgressRoute
   '/profile': typeof ProfileRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/career-paths': typeof CareerPathsRoute
+  '/dashboard': typeof DashboardRoute
   '/my-progress': typeof MyProgressRoute
   '/profile': typeof ProfileRoute
 }
@@ -60,19 +68,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/career-paths': typeof CareerPathsRoute
+  '/dashboard': typeof DashboardRoute
   '/my-progress': typeof MyProgressRoute
   '/profile': typeof ProfileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/career-paths' | '/my-progress' | '/profile'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/career-paths'
+    | '/dashboard'
+    | '/my-progress'
+    | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/career-paths' | '/my-progress' | '/profile'
+  to:
+    | '/'
+    | '/about'
+    | '/career-paths'
+    | '/dashboard'
+    | '/my-progress'
+    | '/profile'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/career-paths'
+    | '/dashboard'
     | '/my-progress'
     | '/profile'
   fileRoutesById: FileRoutesById
@@ -81,6 +103,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CareerPathsRoute: typeof CareerPathsRoute
+  DashboardRoute: typeof DashboardRoute
   MyProgressRoute: typeof MyProgressRoute
   ProfileRoute: typeof ProfileRoute
 }
@@ -99,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/my-progress'
       fullPath: '/my-progress'
       preLoaderRoute: typeof MyProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/career-paths': {
@@ -129,6 +159,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CareerPathsRoute: CareerPathsRoute,
+  DashboardRoute: DashboardRoute,
   MyProgressRoute: MyProgressRoute,
   ProfileRoute: ProfileRoute,
 }
